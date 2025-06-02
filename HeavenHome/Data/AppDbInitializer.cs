@@ -50,7 +50,7 @@ namespace HeavenHome.Data
                             Name = "Single Bed",
                             Description = "Bed for 1 person only",
                             Price = 109.90,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-3.jpeg",
+                            ImageURL = "https://d2kz53n3bzvihv.cloudfront.net/media/gbu0/prodxxl/orrick-rustic-single-bed-55e087733fb1b.jpg",
                             CompanyId = 1,
                             ProductCategory = ProductCategory.Beds
                         },
@@ -59,7 +59,7 @@ namespace HeavenHome.Data
                             Name = "Dining Table",
                             Description = "Family table for your meal",
                             Price = 59.90,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-1.jpeg",
+                            ImageURL = "https://www.decornation.in/wp-content/uploads/2020/03/solid-wood-dining-table-1.jpg",
                             CompanyId = 2,
                             ProductCategory = ProductCategory.Tables
                         }
@@ -88,23 +88,32 @@ namespace HeavenHome.Data
                     context.SaveChanges();
                 }
 
-                //Materials & Products
+                // Materials & Products
                 if (!context.Materials_Products.Any())
                 {
-                    context.Materials_Products.AddRange(new List<Material_Product>()
+                    var product1 = context.Products.FirstOrDefault(p => p.Name == "Single Bed");
+                    var product2 = context.Products.FirstOrDefault(p => p.Name == "Dining Table");
+
+                    var material1 = context.Materials.FirstOrDefault(m => m.Name == "Wood");
+                    var material2 = context.Materials.FirstOrDefault(m => m.Name == "Leather");
+
+                    if (product1 != null && material1 != null && product2 != null && material2 != null)
                     {
-                        new Material_Product()
+                        context.Materials_Products.AddRange(new List<Material_Product>()
                         {
-                            MaterialId = 1,
-                            ProductId = 3
-                        },
-                        new Material_Product()
-                        {
-                            MaterialId = 2,
-                            ProductId = 4
-                        }
-                    });
-                    context.SaveChanges();
+                            new Material_Product()
+                            {
+                                MaterialId = material1.Id,
+                                ProductId = product1.Id
+                            },
+                            new Material_Product()
+                            {
+                                MaterialId = material2.Id,
+                                ProductId = product2.Id
+                            }
+                        });
+                        context.SaveChanges();
+                    }
                 }
             }
         }
